@@ -1,0 +1,32 @@
+function callMOH() {
+  var url = "http://api.mohstats.com/api/360?"
+     + "players="
+     + 'zerogiant'
+     + "&fields="
+     + 'weapons';
+     
+  var options = {
+    "method": "get",
+    "contentType": "application/json"
+    };
+    
+  var response = UrlFetchApp.fetch(url,options);
+  var headers = response.getHeaders().toSource();
+  var status = response.getResponseCode();
+  
+  var json = response.getContentText();
+  var data = JSON.parse(json);
+  Logger.log(data);
+}
+
+function callBF3 () {
+  var url = 'http://api.bf3stats.com/360/onlinestats/';
+  var platform = 360;
+  var options = {
+    'method': 'post'
+  };
+  
+ var response = UrlFetchApp.fetch(url,options);
+  
+ Logger.log(response.getContentText());
+}
