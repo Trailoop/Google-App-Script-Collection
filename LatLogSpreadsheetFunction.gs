@@ -51,3 +51,65 @@ function getAddressFormatted() {
 
 
 }
+
+
+function getCounty(cell) {
+  Utilities.sleep(9000);
+  var response = Maps.newGeocoder().geocode(cell);
+  var addressComponents =  response.results[0].address_components;
+  var county = ""
+  for (var i = 0; i < addressComponents.length; i++) {
+      var types = addressComponents[i].types.join(",")
+      if (types == "administrative_area_level_2,political") {
+      
+        county = addressComponents[i].short_name;
+      }
+  }
+  
+  return county;
+  
+}
+
+function test(cell){
+Utilities.sleep(9000)
+var response = Maps.newGeocoder().geocode(cell);
+var lat = response.results[0].geometry.location.lat;
+var lng = response.results[0].geometry.location.lng;
+var result = lat + ":" + lng;
+return result.toString();
+
+}
+
+function getAddress(cell){
+Utilities.sleep(9000)
+var response = Maps.newGeocoder().geocode(cell);
+var address = response.results[0].formatted_address;
+return address;
+
+}
+
+function getAllCounties() {
+ var sheet = SpreadsheetApp.getActiveSheet();
+ var range = sheet.getRange(sheet.getDataRange().getLastRow() - sheet.getDataRange().getNumRows(), sheet.getDataRange().getLastColumn(), sheet.getDataRange().getNumRows(), 1); 
+ var locationInfo = range.getValues();
+ var response,county;
+ var values = [];
+   for (var i = 0; i < locationInfo.length; i++) {
+    response = Maps.newGeocoder().geocode(locationInfo[i]);
+ 
+ var addressComponents = response.results[0].address_components;
+
+  for (var i = 0; i < addressComponents.length; i++) {
+      var types = addressComponents[i].types.join(",")
+      if (types == "administrative_area_level_2,political") {
+        county = addressComponents[i].long_name
+        values.push(county);
+      }
+   }
+   Utilities.sleep(5000);
+  }
+  
+   return values;
+   
+}
+
