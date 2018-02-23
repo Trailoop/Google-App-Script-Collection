@@ -1,0 +1,24 @@
+function getCSVData() {
+   var cache = CacheService.getPublicCache();
+   var cached = cache.get("csv-data");
+   if (cached != null) {
+     return cached;
+   }
+   
+   var file = DocsList.getFileById('0B_8vyeCfOHNZWWNQWXJUOG5LRUU').get;
+   var csvData = Utilities.parseCsv(file);
+   cache.put("csv-data", csvData, 1500); // cache for 25 minutes
+   return csvData;
+}
+ 
+function test1() {
+var data = getCSVData();
+Logger.log(data[0][2]);
+
+
+}
+
+function test2() {
+var file = DocsList.getFileById('0B_8vyeCfOHNZWWNQWXJUOG5LRUU');
+
+}
