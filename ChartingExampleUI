@@ -1,0 +1,84 @@
+function doGet() {
+
+ var missStoreData = Charts.newDataTable();
+ missStoreData.addColumn(Charts.ColumnType.NUMBER, "Store");
+ missStoreData.addRow([09421])
+ .build();
+ 
+ var storeFilter = Charts.newNumberRangeFilter()
+ .setFilterColumnLabel("Store")
+ .build();
+ 
+ var missingStoreTable = Charts.newTableChart()
+ .build();
+ 
+ //var board1 = Charts.newDashboardPanel()
+ //.setDataTable(missStoreData)
+ //.bind([storeFilter], [missingStoreTable])
+ //.build();
+ 
+ var data = Charts.newDataTable()
+ .addColumn(Charts.ColumnType.NUMBER, "Store")
+ .addColumn(Charts.ColumnType.NUMBER, "Average Dollars")
+ .addColumn(Charts.ColumnType.NUMBER, "Variance")
+ .addColumn(Charts.ColumnType.NUMBER, "Low Range")
+ .addColumn(Charts.ColumnType.NUMBER, "High Range")
+ .addColumn(Charts.ColumnType.NUMBER, "Week 1")
+ .addColumn(Charts.ColumnType.NUMBER, "Week 2")
+ .addColumn(Charts.ColumnType.NUMBER, "Week 3")
+ .addColumn(Charts.ColumnType.NUMBER, "Week 4")
+ .addColumn(Charts.ColumnType.NUMBER, "Week 5")
+ .addRow([0001,100000,20,60000,120000,11000,75000,99000,100000,990000])
+ .addRow([0002,90000,22,60000,120000,11000,75000,99000,100000,990000])
+ .build();
+ 
+ 
+ 
+ 
+ var actualChart = Charts.newBarChart()
+ .setDataViewDefinition(Charts.newDataViewDefinition().setColumns([0,2]))
+ .build();
+ 
+ var rangeChart = Charts.newColumnChart()
+ .setDataViewDefinition(Charts.newDataViewDefinition().setColumns([3,4]))
+ .build();
+ 
+ var trendChart = Charts.newLineChart()
+ .setDataViewDefinition(Charts.newDataViewDefinition().setColumns([0,5]))
+ .build();
+ 
+ var tableChart = Charts.newTableChart()
+ .build();
+ 
+ var storeFilter2 = Charts.newNumberRangeFilter()
+ .setFilterColumnLabel("Store")
+ .setShowRangeValues(true)
+ .build();
+ 
+ var varianceFilter = Charts.newNumberRangeFilter()
+ .setFilterColumnLabel("Variance")
+ .build();
+ 
+ var board1 = Charts.newDashboardPanel()
+ .setDataTable(data)
+ .bind([storeFilter2,varianceFilter], [actualChart,rangeChart,trendChart,tableChart])
+ .build();
+ 
+ 
+ var app = UiApp.createApplication();
+ app.setTitle("Daily Sales");
+ 
+ board1.add(app.createVerticalPanel()
+       .add(app.createHorizontalPanel()
+            .add(storeFilter2).add(varianceFilter).setSpacing(70))
+       .add(app.createHorizontalPanel()
+            .add(actualChart).add(rangeChart).add(trendChart).add(tableChart).setSpacing(10)));
+ 
+ app.add(board1);
+ return app;
+ 
+ 
+ 
+
+
+}
